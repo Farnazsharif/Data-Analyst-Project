@@ -1,0 +1,19 @@
+Study of the correlation between five dimensions of personality
+We show how much different dimension of personality are correlated that helps to understand single or multiple personality trait in an individual.
+1- Data source: number 1043
+https://vincentarelbundock.github.io/Rdatasets/articles/data.html
+2- Analysis steps:
+•            Removing the problematic case and dealing with outliers and missing data.
+•            Splitting the remaining cleaned data file into three subsets: training, validation, and test
+•            Examining frequency and means of each response and finding the extremes.
+•            Performing Exploratory Factor Analysis to group our data to 5 big personality categories, which are a set of underlying variables called factors  for addressing the interrelationships among those variables.
+•            so we have cluster the data to 5 group based on factor analysis function in R ( fa or score items):
+Personality data: The Big Five Personality Traits:
+1)           Conscientiousness 
+2)           Agreeableness
+3)           Neuroticism
+4)           Openness to Experience
+5)           Extraversion
+Result and discussion:
+Fig 1. We have clustered the personalities based on the scores of each categorical question. The subfigures show the 5 personalities dimension distribution of 2800 subjects.
+Fig 2. Shows the inter-trait correlation of the five histograms in fig1. The results show that the Agreeableness personality has the highest overlap with the extraversion trait and the lowest overlap with the neuroticism trait. Furthermore, the neuroticism trait has a negative correlation with other personality traits. This means that subject with neuroticism trait is less likely to represent the other four dimensions of personality.
