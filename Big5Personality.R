@@ -1,0 +1,94 @@
+library("psychTools")
+library("psych")
+######################### Read data from package "psychTools"
+data(bfi)               # load data from the package
+######################### remove missing answers to Questions
+missing<-apply( bfi[1:25],1,function(x) sum(is.na(x)))
+#table(missing)
+bfi<-bfi[missing==0,]
+#########################
+scores <- scoreItems(bfi.keys,bfi,min=1,max=6) #specify the minimum and maximum values
+cor<-round(scores$cor,2)
+cor.plot(cor,cex=0.8,main="Heat map of inter-trait correlations within the study",cex.main=2)
+######################### creates data frames
+character_name<-c("Agreeableness", "Conscientiousness", "Extraversion", "Neuroticism", "Openness")
+fit1<-scores$scores
+quartz(width=10,height=6)
+par(mfrow=c(3,2))
+for(i in 1:5){ hist(fit1[,i],xlab="Response scale",sub="1:Very Inaccurate 2:Moderately Inaccurate 3:Slightly Inaccurate 4:Slightly Accurate 5:Moderately Accurate 6:Very Accurate"
+                    ,main=character_name[i],cex.lab=1.5, cex.axis=1,cex.main=2,cex.sub=.78)}
+########################
+quartz(width=10,height=6)
+par(mfrow=c(2,5))
+
+age<-bfi[,28]
+age_bin=seq(min(age), max(age), by=5)
+for(j in 1:5){ 
+Personality<-scores$scores[,j]
+
+x <- 0
+for(i in 1:length(age_bin)-1) {
+  x[i]<-c(mean(Personality[age>=age_bin[i] & age<age_bin[i+1]]))  }
+barplot(x,names=age_bin[1:length(age_bin)-1],xlab="age", main=character_name[j],ylab="Mean of scores")
+}
+
+age<-bfi[,28]
+age_bin=seq(min(age), max(age), by=5)
+for(j in 1:5){ 
+  Personality<-scores$scores[,j]
+  
+  x <- 0
+  for(i in 1:length(age_bin)-1) {
+    x[i]<-c(median(Personality[age>=age_bin[i] & age<age_bin[i+1]]))  }
+  barplot(x,names=age_bin[1:length(age_bin)-1],xlab="age", main=character_name[j],ylab="Median of scores")
+}
+######################## Mean of scores for gender 
+gender<-bfi[,26]
+mean_score_Female<-0
+mean_score_male<-0
+
+for(i in 1:5) {
+Female<-scores$scores[gender==2,i]
+Male<-scores$scores[gender==1,i]
+mean_score_Female[i]<-mean(Female)
+mean_score_male[i]<-mean(Male) }
+
+quartz(width=5,height=7)
+par(mfrow=c(2,1))
+
+slices <- mean_score_Female
+lbls <- character_name
+lbls <- paste(lbls, round(slices,2)) # add percents to labels
+pie(slices, labels = lbls,main="Pie Chart of mean of scores for females")
+
+slices <- mean_score_male
+lbls <- character_name
+lbls <- paste(lbls, round(slices,2)) # add percents to labels
+pie(slices, labels = lbls,main="Pie Chart of mean of scores for males")
+######################## Median of scores for gender 
+gender<-bfi[,26]
+mean_score_Female<-0
+mean_score_male<-0
+
+for(i in 1:5) {
+  Female<-scores$scores[gender==2,i]
+  Male<-scores$scores[gender==1,i]
+  mean_score_Female[i]<-median(Female)
+  mean_score_male[i]<-median(Male) }
+
+quartz(width=5,height=7)
+par(mfrow=c(2,1))
+
+slices <- mean_score_Female
+lbls <- character_name
+lbls <- paste(lbls, round(slices,2)) # add percents to labels
+pie(slices, labels = lbls,main="Pie Chart of median of scores for females")
+
+slices <- mean_score_male
+lbls <- character_name
+lbls <- paste(lbls, round(slices,2)) # add percents to labels
+pie(slices, labels = lbls,main="Pie Chart of median of scores for males")
+
+# gender Males = 1, Females =2
+# https://www.personality-project.org/r/html/bfi.html
+
